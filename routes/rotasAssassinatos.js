@@ -2,16 +2,17 @@ const { Router } = require('express');
 const { getAssassinatos, addAssassinato, updateAssassinato, getAssassinatoPorId, 
     deleteAssassinato} = 
     require('../controllers/assassinatosController');
+const { verificaJWT } = require('../controllers/segurancaController');
 
 const rotasAssassinatos = new Router();
 
 rotasAssassinatos.route('/assassinato')
                .get(getAssassinatos)
-               .post(addAssassinato)
-               .put(updateAssassinato);
+               .post(verificaJWT, addAssassinato)
+               .put(verificaJWT, updateAssassinato);
 
 rotasAssassinatos.route('/assassinato/:id') 
-               .get(getAssassinatoPorId)              
-               .delete(deleteAssassinato);
+               .get(verificaJWT, getAssassinatoPorId)              
+               .delete(verificaJWT, deleteAssassinato);
 
 module.exports = { rotasAssassinatos };
